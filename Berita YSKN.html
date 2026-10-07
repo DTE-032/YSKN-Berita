@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kabar & Berita Kemanusiaan - Yayasan Sahabat Kemanusiaan Nusantara (YSKN)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0ea5e9',
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & Bootstrap Icons CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 25s linear infinite;
+        }
+        .ticker-content:hover {
+            animation-play-state: paused;
+        }
+
+        /* Demo Disclaimer Popup */
+        #demo-disclaimer {
+            opacity: 0;
+            visibility: hidden;
+            transition: all .35s ease;
+        }
+        #demo-disclaimer.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        #demo-disclaimer .demo-card {
+            transform: translateY(30px) scale(.96);
+            transition: transform .35s ease;
+        }
+        #demo-disclaimer.active .demo-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Top Banner (Running Text Realtime Donasi) -->
+    <div class="bg-slate-900 text-white text-xs md:text-sm py-2.5 overflow-hidden border-b border-primary-500/30 relative z-50">
+        <div class="ticker-wrap w-full flex items-center">
+            <span class="bg-primary-500 text-white px-3 py-1 text-xs font-bold uppercase rounded ml-4 mr-2 z-10 shrink-0 shadow-sm shadow-primary-500/20 flex items-center gap-1.5">
+                <i class="bi bi-broadcast animate-pulse"></i> Live Donasi
+            </span>
+            <div class="ticker-content flex space-x-12 items-center">
+                <span>DONATOR AKTIF - 2026 <span class="text-slate-400 font-normal ml-1"><i class="bi bi-geo-alt-fill text-rose-400"></i> INDONESIA</span></span>
+                <span>Nandang Sektiyo - Rp 500.000 <span class="text-slate-400 font-normal ml-1">Jakarta</span></span>
+                <span>Bagus - Rp 150.000 <span class="text-slate-400 font-normal ml-1">Bekasi</span></span>
+                <span>Emil - Rp 1.000.000 <span class="text-slate-400 font-normal ml-1">Jakarta</span></span>
+                <span>Donatur Anonim - Rp 250.000 <span class="text-slate-400 font-normal ml-1">Bekasi</span></span>
+                <span>Abraham - Rp 50.000 <span class="text-slate-400 font-normal ml-1">Surabaya</span></span>
+                <span>Hamba Allah - Rp 500.000 <span class="text-slate-400 font-normal ml-1">Denpasar</span></span>
+                <span>Budi Santoso - Rp 150.000 <span class="text-slate-400 font-normal ml-1">Jombang</span></span>
+                <span>Siti Rahma - Rp 1.000.000 <span class="text-slate-400 font-normal ml-1">Sumbawa</span></span>
+                <span>Donatur Anonim - Rp 250.000 <span class="text-slate-400 font-normal ml-1">Aceh Tamiang</span></span>
+                <span>Heru - Rp 100.000 <span class="text-slate-400 font-normal ml-1">NTT</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation -->
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo YSKN -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-500 to-primary-300 flex items-center justify-center text-white shadow-md shadow-primary-500/20 transition-transform group-hover:scale-105">
+                        <i class="bi bi-heart-fill text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xs font-bold tracking-widest uppercase text-primary-500">YAYASAN</span>
+                        <span class="block text-sm md:text-base font-extrabold text-slate-900 tracking-tight leading-none">Sahabat Kemanusiaan</span>
+                        <span class="block text-[10px] text-slate-500 font-medium">Nusantara</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center space-x-7">
+                    <a href="index.html" class="text-slate-600 hover:text-primary-500 font-medium text-sm transition-colors">Tentang Kami</a>
+                    <a href="#ambulan" onclick="openToast('Dialing Ambulan Service...')" class="text-slate-600 hover:text-primary-500 font-medium text-sm transition-colors">Ambulan Gratis</a>
+                    <a href="#program" class="text-slate-600 hover:text-primary-500 font-medium text-sm transition-colors">Program</a>
+                    <a href="#dampak" class="text-slate-600 hover:text-primary-500 font-medium text-sm transition-colors">Dampak</a>
+                    <!-- Active Link indicator for News Page -->
+                    <a href="#berita" class="text-primary-600 font-bold text-sm bg-primary-50 px-3.5 py-1.5 rounded-full border border-primary-200 shadow-sm">Kabar Terbaru</a>
+                    <a href="#galeri" class="text-slate-600 hover:text-primary-500 font-medium text-sm transition-colors">Galeri</a>
+                    <button onclick="openConfirmModal()" class="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-lg shadow-primary-500/25 transition-all hover:shadow-primary-500/35 active:scale-95 flex items-center gap-1.5">
+                        <i class="bi bi-heart-pulse-fill"></i> Donasi Sekarang
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Toggle menu">
+                    <i class="bi bi-list text-3xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md transition-all duration-300">
+            <div class="px-4 pt-4 pb-6 space-y-3 shadow-inner">
+                <a href="index.html" class="block px-4 py-2.5 rounded-xl text-slate-600 hover:bg-primary-50 hover:text-primary-500 font-semibold transition-all">Tentang Kami</a>
+                <a href="#ambulan" class="block px-4 py-2.5 rounded-xl text-slate-600 hover:bg-primary-50 hover:text-primary-500 font-semibold transition-all">Ambulan Gratis</a>
+                <a href="#program" class="block px-4 py-2.5 rounded-xl text-slate-600 hover:bg-primary-50 hover:text-primary-500 font-semibold transition-all">Program</a>
+                <a href="#dampak" class="block px-4 py-2.5 rounded-xl text-slate-600 hover:bg-primary-50 hover:text-primary-500 font-semibold transition-all">Dampak Nyata</a>
+                <a href="#berita" class="block px-4 py-2.5 rounded-xl text-primary-600 bg-primary-50 font-bold transition-all">Kabar Terbaru (Aktif)</a>
+                <a href="#galeri" class="block px-4 py-2.5 rounded-xl text-slate-600 hover:bg-primary-50 hover:text-primary-500 font-semibold transition-all">Galeri</a>
+                <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+                    <button onclick="openConfirmModal(); toggleMobileMenu();" class="w-full text-center bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-500/25 transition-all flex items-center justify-center gap-2">
+                        <i class="bi bi-heart-pulse-fill"></i> Donasi Sekarang
+                    </button>
+                    <a href="tel:+6281291191183" class="w-full text-center border border-rose-500 text-rose-500 hover:bg-rose-50 font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="bi bi-telephone-outbound-fill animate-bounce"></i> Ambulan Darurat 24 Jam
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- News Header Hero Section -->
+    <section class="bg-gradient-to-b from-primary-50/80 via-slate-50 to-slate-50 pt-10 pb-12 border-b border-slate-200/60 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-primary-200/30 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-primary-300/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="flex text-xs text-slate-500 font-medium mb-4" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="hover:text-primary-600 flex items-center gap-1.5 transition-colors">
+                            <i class="bi bi-house-door-fill text-primary-500"></i> Beranda
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="bi bi-chevron-right text-slate-400 text-[10px] mx-1"></i>
+                            <span class="text-slate-900 font-semibold">Kabar & Berita Kemanusiaan</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="inline-flex items-center gap-2 bg-primary-100 text-primary-700 border border-primary-200 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <i class="bi bi-newspaper"></i> Informasi & Update Resmi
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Menebar Inspirasi & <br class="hidden sm:inline">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-700">Transparansi Kemanusiaan</span>
+                    </h1>
+                    <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl font-light">
+                        Simak warta terbaru mengenai aksi tanggap darurat, laporan pertanggungjawaban penyaluran donasi, cerita senyum penerima manfaat, dan agenda kebaikan YSKN seluruh Nusantara.
+                    </p>
+                </div>
+
+                <!-- Realtime Search Bar -->
+                <div class="lg:col-span-5 bg-white p-5 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 space-y-3">
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                        <i class="bi bi-search text-primary-500"></i> Cari Artikel Berita
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="news-search-input" onkeyup="filterNews()" placeholder="Ketik kata kunci berita (misal: ambulan, bantuan, banjir)..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all">
+                        <i class="bi bi-search absolute left-4 top-3.5 text-slate-400 text-base"></i>
+                        <button onclick="clearSearch()" id="clear-search-btn" class="hidden absolute right-3 top-3 text-xs bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-full w-6 h-6 items-center justify-center">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
+                        <span>Pencarian cepat berita & program</span>
+                        <span id="search-count-badge" class="font-bold text-primary-600">Menampilkan Semua</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="mt-8 pt-6 border-t border-slate-200/80 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-2 flex items-center gap-1">
+                    <i class="bi bi-funnel-fill"></i> Kategori:
+                </span>
+                <button onclick="setCategory('semua')" class="category-btn active bg-primary-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all shadow-md shrink-0" data-cat="semua">
+                    <i class="bi bi-grid-fill mr-1"></i> Semua Berita
+                </button>
+                <button onclick="setCategory('bencana')" class="category-btn bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs px-4 py-2 rounded-xl transition-all shrink-0" data-cat="bencana">
+                    <i class="bi bi-exclamation-triangle-fill text-rose-500 mr-1"></i> Tanggap Bencana
+                </button>
+                <button onclick="setCategory('kesehatan')" class="category-btn bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs px-4 py-2 rounded-xl transition-all shrink-0" data-cat="kesehatan">
+                    <i class="bi bi-hospital-fill text-indigo-500 mr-1"></i> Ambulan & Kesehatan
+                </button>
+                <button onclick="setCategory('pendidikan')" class="category-btn bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs px-4 py-2 rounded-xl transition-all shrink-0" data-cat="pendidikan">
+                    <i class="bi bi-mortarboard-fill text-sky-500 mr-1"></i> Beasiswa & Pendidikan
+                </button>
+                <button onclick="setCategory('pemberdayaan')" class="category-btn bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs px-4 py-2 rounded-xl transition-all shrink-0" data-cat="pemberdayaan">
+                    <i class="bi bi-graph-up-arrow text-emerald-500 mr-1"></i> Pemberdayaan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <main class="py-12 flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid lg:grid-cols-12 gap-8">
+                
+                <!-- Left Column: News List & Featured Card (8 Columns) -->
+                <div class="lg:col-span-8 space-y-10">
+
+                    <!-- Featured Headline Card -->
+                    <div id="featured-article" class="news-item bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group" data-category="bencana" data-title="tanggap bencana banjir gempa sumatra respon darurat logistik" data-id="1">
+                        <div class="grid md:grid-cols-12">
+                            <div class="md:col-span-6 relative h-64 md:h-auto overflow-hidden bg-slate-900">
+                                <img src="https://i.pinimg.com/736x/70/71/93/7071937848b43f34335735f04c7bcaf1.jpg" alt="Tanggap Bencana YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                                    <span class="bg-rose-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                        <i class="bi bi-star-fill"></i> HEADLINE
+                                    </span>
+                                    <span class="bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">
+                                        Tanggap Bencana
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="md:col-span-6 p-6 md:p-8 flex flex-col justify-between space-y-4">
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-4 text-xs text-slate-400 font-medium">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 05 Oktober 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock text-primary-500"></i> 3 min baca</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-eye-fill text-primary-500"></i> 1.840</span>
+                                    </div>
+                                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 group-hover:text-primary-600 transition-colors leading-snug">
+                                        Respon Cepat Tim Kemanusiaan YSKN Salurkan Logistik Darurat Korban Bencana
+                                    </h2>
+                                    <p class="text-slate-600 text-sm leading-relaxed line-clamp-3 font-light">
+                                        Tim relawan lapangan YSKN telah tiba di lokasi terdampak untuk mendirikan dapur umum, mendistribusikan ratusan selimut, air bersih, serta paket sembako darurat bagi warga penyintas.
+                                    </p>
+                                </div>
+
+                                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(1)" class="bg-primary-500 hover:bg-primary-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-md shadow-primary-500/20">
+                                        Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                    <button onclick="shareNews('Respon Cepat Tim Kemanusiaan YSKN Salurkan Logistik Darurat')" class="text-slate-400 hover:text-primary-600 p-2 rounded-lg hover:bg-slate-100 transition-colors" title="Bagikan Berita">
+                                        <i class="bi bi-share-fill text-base"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Title -->
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                            <i class="bi bi-collection-fill text-primary-500"></i> Daftar Berita Kemanusiaan
+                        </h3>
+                        <span id="news-counter" class="text-xs bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded-full">6 Artikel</span>
+                    </div>
+
+                    <!-- News Grid (Interactive) -->
+                    <div id="news-grid" class="grid md:grid-cols-2 gap-6">
+
+                        <!-- Card 1 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="kesehatan" data-title="armada ambulan gratis yskn antar pasien kritis 24 jam bekasi jakarta" data-id="2">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/736x/59/a0/67/59a0673eeb1f1ad7d9658a4780e664e5.jpg" alt="Ambulan Gratis YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-indigo-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-hospital-fill"></i> Kesehatan
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 02 Oktober 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 2 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Layanan Ambulan Gratis YSKN Genapkan 1.000 Pengantaran Pasien Kritis
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Armada ambulan gratis kemanusiaan YSKN terus bersiap siaga melayani rujukan medis dan pengantaran jenazah bagi warga dhuafa tanpa dipungut biaya.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(2)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 1.220</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="pangan" data-title="penyaluran sembako paket pangan bernutrisi lansia dhuafa" data-id="3">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/736x/c9/71/4d/c9714d5c7628abe785e013afdf07f0e4.jpg" alt="Penyaluran Sembako YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-basket-fill"></i> Pangan & Gizi
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 28 September 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 3 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Penyaluran 500 Paket Pangan Bernutrisi Untuk Lansia & Yatim Dhuafa
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Program rutin Berbagi Pangan YSKN menyasar ratusan keluarga pra-sejahtera di wilayah perkampungan padat Bekasi dan sekitarnya.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(3)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 950</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="pendidikan" data-title="program beasiswa anak yatim prestasi sekolah pendidikan" data-id="4">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/736x/7c/32/e9/7c32e9c3781aa159af833b60136b79f7.jpg" alt="Beasiswa YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-sky-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-mortarboard-fill"></i> Pendidikan
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 20 September 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 4 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Senyum Cerah Anak Yatim Penerima Beasiswa Orang Tua Asuh YSKN
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Pemberian bantuan SPP sekolah, perlengkapan belajar, serta tabungan pendidikan diserahkan langsung oleh pengurus pengawas yayasan.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(4)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 1.410</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="kesehatan" data-title="pemeriksaan kesehatan gratis medis balita lansia posko kesehatan" data-id="5">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/736x/08/69/40/08694028e7c1412f0e3f5680dc9b2156.jpg" alt="Pemeriksaan Kesehatan Gratis" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-indigo-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-hospital-fill"></i> Kesehatan
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 14 September 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 3 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Aksi Posko Keliling Medis & Pemeriksaan Kesehatan Gratis Nelayan
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Tim dokter dan relawan medis YSKN menggelar pengecekan darah, pemberian vitamin, serta konsultasi gratis bagi keluarga nelayan.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(5)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 880</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="pemberdayaan" data-title="pemberdayaan ekonomi modal usaha bergulir umkm dhuafa mandiri" data-id="6">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/1200x/8d/f1/a7/8df1a73790a5e1003590a1155337eb89.jpg" alt="Pemberdayaan UMKM YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-graph-up-arrow"></i> Pemberdayaan
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 08 September 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 5 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Program Modal Usaha Mandiri Dorong Kemandirian Ekonomi Dhuafa
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Pemberian sarana gerobak usaha serta pendampingan wirausaha mikro secara gratis bagi ibu-ibu kepala keluarga.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(6)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 1.050</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 6 -->
+                        <div class="news-item bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group" data-category="bencana" data-title="dapur umum kemanusiaan makanan siap saji pengungsian" data-id="7">
+                            <div class="relative h-48 overflow-hidden bg-slate-100 shrink-0">
+                                <img src="https://i.pinimg.com/1200x/5c/31/c5/5c31c5b4a58cfcf2bc06c5118a3ab2c9.jpg" alt="Dapur Umum YSKN" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-rose-500 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow flex items-center gap-1">
+                                    <i class="bi bi-exclamation-triangle-fill"></i> Tanggap Bencana
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between text-xs text-slate-400">
+                                        <span class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> 01 September 2026</span>
+                                        <span class="flex items-center gap-1"><i class="bi bi-clock"></i> 3 min</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                        Pendirian Posko Dapur Umum Sediakan 1.000 Porsi Makanan Hangat
+                                    </h3>
+                                    <p class="text-slate-600 text-xs leading-relaxed line-clamp-2 font-light">
+                                        Relawan YSKN memasak dan mendistribusikan santapan gizi berimbang langsung ke titik-titik pengungsian darurat.
+                                    </p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                    <button onclick="openNewsModal(7)" class="text-primary-600 hover:text-primary-700 font-bold text-xs inline-flex items-center gap-1">
+                                        Baca Artikel <i class="bi bi-chevron-right text-[10px]"></i>
+                                    </button>
+                                    <span class="text-[11px] text-slate-400"><i class="bi bi-eye-fill"></i> 760</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- No Results Placeholder -->
+                    <div id="no-results" class="hidden bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-4">
+                        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-2xl">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-800">Tidak ada berita yang ditemukan</h4>
+                        <p class="text-sm text-slate-500 max-w-sm mx-auto">Coba gunakan kata kunci pencarian yang berbeda atau pilih kategori berita lainnya.</p>
+                        <button onclick="resetFilters()" class="bg-primary-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl">Tampilkan Semua Artikel</button>
+                    </div>
+
+                    <!-- Pagination System -->
+                    <div class="pt-6 border-t border-slate-200 flex items-center justify-between">
+                        <p class="text-xs text-slate-500">Menampilkan <span class="font-bold text-slate-800">1-6</span> dari <span class="font-bold text-slate-800">18</span> berita</p>
+                        
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="changePage(1)" class="p-2 rounded-xl border border-slate-200 text-slate-400 hover:bg-slate-100 transition-colors disabled:opacity-50" disabled>
+                                <i class="bi bi-chevron-left text-xs"></i>
+                            </button>
+                            <button onclick="changePage(1)" class="w-9 h-9 rounded-xl bg-primary-500 text-white font-bold text-xs shadow-md shadow-primary-500/20">1</button>
+                            <button onclick="changePage(2)" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs transition-colors">2</button>
+                            <button onclick="changePage(3)" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs transition-colors">3</button>
+                            <button onclick="changePage(2)" class="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors">
+                                <i class="bi bi-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Sidebar Widgets (4 Columns) -->
+                <aside class="lg:col-span-4 space-y-8">
+
+                    <!-- Emergency Ambulan Widget Call -->
+                    <div class="bg-gradient-to-br from-rose-500 to-rose-600 text-white p-6 rounded-3xl shadow-xl shadow-rose-500/20 relative overflow-hidden space-y-4">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+                        <div class="flex items-center justify-between">
+                            <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-full flex items-center gap-1">
+                                <i class="bi bi-hospital-fill"></i> Layanan 24 Jam
+                            </span>
+                            <i class="bi bi-telephone-outbound-fill text-2xl animate-pulse"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold leading-tight">Butuh Ambulan Darurat Gratis?</h3>
+                            <p class="text-xs text-rose-100 mt-1 font-light leading-relaxed">
+                                Siap melayani kondisi gawat darurat, rujukan pasien, dan bantuan bencana tanpa biaya sama sekali.
+                            </p>
+                        </div>
+                        <div class="pt-2 flex flex-col gap-2">
+                            <a href="tel:+6281291191183" class="bg-white text-rose-600 hover:bg-rose-50 font-extrabold text-sm py-3 px-4 rounded-xl text-center shadow transition-all flex items-center justify-center gap-2">
+                                <i class="bi bi-telephone-fill"></i> Hubungi 0812-9119-1183
+                            </a>
+                            <a href="https://wa.me/6281291191183" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-2.5 px-4 rounded-xl text-center transition-all flex items-center justify-center gap-2">
+                                <i class="bi bi-whatsapp"></i> Chat WhatsApp Darurat
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Popular / Trending News Widget -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="bi bi-fire text-amber-500"></i> Berita Populer
+                            </h3>
+                            <span class="text-[11px] text-slate-400 font-semibold">Minggu Ini</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Pop Item 1 -->
+                            <div onclick="openNewsModal(1)" class="flex items-center gap-3 group cursor-pointer">
+                                <span class="text-lg font-black text-slate-300 group-hover:text-primary-500 transition-colors w-5">01</span>
+                                <div class="space-y-1">
+                                    <h4 class="text-xs font-bold text-slate-800 group-hover:text-primary-600 transition-colors line-clamp-2 leading-snug">
+                                        Respon Cepat Tim Kemanusiaan YSKN Salurkan Logistik Bencana
+                                    </h4>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-400">
+                                        <span><i class="bi bi-calendar3"></i> 05 Okt</span>
+                                        <span><i class="bi bi-eye-fill"></i> 1.840 dibaca</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pop Item 2 -->
+                            <div onclick="openNewsModal(4)" class="flex items-center gap-3 group cursor-pointer border-t border-slate-100 pt-3">
+                                <span class="text-lg font-black text-slate-300 group-hover:text-primary-500 transition-colors w-5">02</span>
+                                <div class="space-y-1">
+                                    <h4 class="text-xs font-bold text-slate-800 group-hover:text-primary-600 transition-colors line-clamp-2 leading-snug">
+                                        Senyum Cerah Anak Yatim Penerima Beasiswa Orang Tua Asuh YSKN
+                                    </h4>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-400">
+                                        <span><i class="bi bi-calendar3"></i> 20 Sep</span>
+                                        <span><i class="bi bi-eye-fill"></i> 1.410 dibaca</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pop Item 3 -->
+                            <div onclick="openNewsModal(2)" class="flex items-center gap-3 group cursor-pointer border-t border-slate-100 pt-3">
+                                <span class="text-lg font-black text-slate-300 group-hover:text-primary-500 transition-colors w-5">03</span>
+                                <div class="space-y-1">
+                                    <h4 class="text-xs font-bold text-slate-800 group-hover:text-primary-600 transition-colors line-clamp-2 leading-snug">
+                                        Layanan Ambulan Gratis YSKN Genapkan 1.000 Pengantaran Pasien
+                                    </h4>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-400">
+                                        <span><i class="bi bi-calendar3"></i> 02 Okt</span>
+                                        <span><i class="bi bi-eye-fill"></i> 1.220 dibaca</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Campaign / Donation Widget -->
+                    <div class="bg-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-primary-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">
+                                Program Mendesak
+                            </span>
+                            <i class="bi bi-heart-pulse-fill text-rose-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-base font-bold leading-snug">
+                            Pengadaan Armada Ambulan Ke-2 Untuk Wilayah Pelosok
+                        </h3>
+                        <p class="text-xs text-slate-300 font-light leading-relaxed">
+                            Melihat tingginya permintaan antar jemput pasien darurat, kami mengajak Anda mewujudkan unit ambulan tambahan.
+                        </p>
+                        <div class="space-y-1.5">
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-primary-500 h-full rounded-full" style="width: 65%;"></div>
+                            </div>
+                            <div class="flex justify-between text-[11px] text-slate-400 font-medium">
+                                <span>Terkumpul: <strong class="text-white">65%</strong></span>
+                                <span>Target: Rp 250 Juta</span>
+                            </div>
+                        </div>
+                        <button onclick="openConfirmModal()" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md shadow-primary-500/30 flex items-center justify-center gap-2">
+                            <i class="bi bi-heart-fill"></i> Salurkan Donasi Kebaikan
+                        </button>
+                    </div>
+
+                    <!-- Legal Document Quick Button -->
+                    <div class="bg-sky-50 border border-sky-100 p-5 rounded-3xl space-y-3">
+                        <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-sky-600"></i> Legalitas & Transparansi
+                        </h4>
+                        <p class="text-xs text-slate-600 font-light leading-relaxed">
+                            Akses dokumen SK Kemenkumham, NPWP, dan Laporan Keuangan resmi Yayasan Sahabat Kemanusiaan Nusantara.
+                        </p>
+                        <button onclick="openPDF('SK Kemenkumham YSKN', 'dokumen/SK-Kemenkumham.pdf', 'AHU-0012345.AH.01.04', 'Tahun 2026')" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                            <i class="bi bi-file-earmark-pdf-fill text-rose-500"></i> Lihat Dokumen Legal
+                        </button>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 pt-16 pb-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-6">
+                    <a href="#" class="flex items-center space-x-3 group">
+                        <div class="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-white shadow-md shadow-primary-500/20">
+                            <i class="bi bi-heart-fill text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold tracking-widest uppercase text-primary-400">YAYASAN</span>
+                            <span class="block text-sm font-extrabold text-white tracking-tight leading-none">Sahabat Kemanusiaan</span>
+                            <span class="block text-[10px] text-slate-500 font-medium">Nusantara</span>
+                        </div>
+                    </a>
+                    <p class="text-xs md:text-sm leading-relaxed font-light">
+                        Kami hadir sebagai wadah penghubung kepedulian sosial Anda untuk meringankan beban, mencerahkan jalan, dan memberdayakan kehidupan saudara sebangsa.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-primary-500 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-primary-500 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-primary-500 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-youtube"></i></a>
+                        <a href="https://web.whatsapp.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-emerald-500 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-whatsapp"></i></a>
+                        <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-cyan-500 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white flex items-center justify-center transition-all"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation Links -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-6">Tautan Navigasi</h4>
+                    <ul class="space-y-3 text-xs md:text-sm">
+                        <li><a href="index.html" class="hover:text-primary-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="#program" class="hover:text-primary-400 transition-colors">Program Utama</a></li>
+                        <li><a href="#ambulan" onclick="openToast('Dialing Ambulan Service...')" class="hover:text-primary-400 transition-colors">Armada Ambulan</a></li>
+                        <li><a href="#berita" class="text-primary-400 font-semibold">Kabar & Berita</a></li>
+                        <li><a href="#galeri" class="hover:text-primary-400 transition-colors">Galeri Dokumentasi</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-6">Informasi Kontak</h4>
+                    <ul class="space-y-4 text-xs md:text-sm">
+                        <li class="flex gap-3">
+                            <span class="text-primary-400 shrink-0"><i class="bi bi-geo-alt-fill"></i></span>
+                            <span>Jl. Taman Wisma Asri II, Blok: DD-28 No. 1, Teluk Pucung, Bekasi Utara, Kota Bekasi (17121) Indonesia</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-primary-400 shrink-0"><i class="bi bi-telephone-fill"></i></span>
+                            <span>+62 813-2220-572</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-primary-400 shrink-0"><i class="bi bi-envelope-fill"></i></span>
+                            <span class="break-all">info@yskn.or.id</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-primary-400 shrink-0"><i class="bi bi-globe"></i></span>
+                            <span class="break-all">www.yskn.or.id</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div class="space-y-4"> 
+                    <h4 class="text-white text-sm uppercase tracking-wider font-semibold">Berlangganan Warta</h4> 
+                    <p class="text-xs leading-relaxed font-light text-slate-300">Dapatkan buletin mingguan transparansi penyaluran donasi dan berita kemanusiaan langsung di email Anda.</p> 
+                    
+                    <form id="newsletter-form" onsubmit="event.preventDefault(); openToast('Terima kasih! Email Anda telah terdaftar dalam buletin warta YSKN.'); this.reset();" class="space-y-2"> 
+                        <div class="relative"> 
+                            <input type="email" placeholder="Alamat Email Anda" required class="w-full bg-slate-800 text-white placeholder-slate-500 border border-slate-700 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"> 
+                        </div> 
+                        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-4 rounded-xl transition-all text-xs flex items-center justify-center gap-1.5">
+                            <i class="bi bi-send-fill"></i> Berlangganan Sekarang
+                        </button> 
+                    </form> 
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+                <p>&copy; 2026 Sahabat Kemanusiaan Nusantara. All rights reserved.</p>
+                <p>Developed by <a href="https://wasobi-technology-indonesia.webflow.io/" target="_blank" rel="noopener noreferrer" class="hover:text-primary-400 transition-colors font-semibold">WasobiTech</a></p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <!-- 1. FULL NEWS ARTICLE MODAL -->
+    <div id="news-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full my-8 overflow-hidden shadow-2xl border border-slate-100 relative text-slate-800 animate-fadeIn">
+            <!-- Modal Header Sticky Bar -->
+            <div class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center justify-between z-20">
+                <span id="modal-category-badge" class="bg-primary-100 text-primary-700 font-extrabold text-xs px-3 py-1 rounded-full uppercase">
+                    Kategori Berita
+                </span>
+                <button onclick="closeNewsModal()" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition-all focus:outline-none">
+                    <i class="bi bi-x-lg text-sm"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8 space-y-6 max-h-[80vh] overflow-y-auto">
+                <!-- Article Title & Meta -->
+                <div class="space-y-3">
+                    <h2 id="modal-news-title" class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-snug">
+                        Judul Berita Lengkap
+                    </h2>
+                    <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium pb-2 border-b border-slate-100">
+                        <span class="flex items-center gap-1"><i class="bi bi-person-fill text-primary-500"></i> Redaksi YSKN</span>
+                        <span id="modal-news-date" class="flex items-center gap-1"><i class="bi bi-calendar3 text-primary-500"></i> Tanggal</span>
+                        <span id="modal-news-readtime" class="flex items-center gap-1"><i class="bi bi-clock text-primary-500"></i> Waktu</span>
+                        <span id="modal-news-views" class="flex items-center gap-1"><i class="bi bi-eye-fill text-primary-500"></i> Dibaca</span>
+                    </div>
+                </div>
+
+                <!-- Featured Image -->
+                <div class="relative rounded-2xl overflow-hidden aspect-video bg-slate-100 border border-slate-200">
+                    <img id="modal-news-image" src="" alt="Gambar Berita" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Main Content Text -->
+                <div id="modal-news-body" class="text-slate-700 text-sm md:text-base leading-relaxed space-y-4 font-light">
+                    <!-- Dynamic paragraphs populated by JS -->
+                </div>
+
+                <!-- Quote Box -->
+                <div class="bg-primary-50 border-l-4 border-primary-500 p-4 rounded-r-2xl italic text-xs md:text-sm text-slate-700 space-y-1">
+                    <p id="modal-news-quote">"Meringankan beban sesama adalah wujud nyata kasih kasih sayang seluruh elemen Nusantara."</p>
+                    <span class="block font-bold text-primary-800 not-italic text-xs">— Pengurus Yayasan Sahabat Kemanusiaan Nusantara</span>
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-500">Bagikan Warta Ini:</span>
+                    <div class="flex gap-2">
+                        <button onclick="shareViaWA()" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </button>
+                        <button onclick="copyNewsLink()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
+                            <i class="bi bi-copy"></i> Salin Tautan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Comment Form Section -->
+                <div class="pt-6 border-t border-slate-200 space-y-4">
+                    <h4 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+                        <i class="bi bi-chat-dots-fill text-primary-500"></i> Kirimkan Tanggapan & Doa
+                    </h4>
+                    
+                    <form id="comment-form" onsubmit="submitComment(event)" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="comment-name" required placeholder="Nama Anda" class="w-full border border-slate-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <input type="email" id="comment-email" placeholder="Email (Opsional)" class="w-full border border-slate-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                        <textarea id="comment-text" required rows="3" placeholder="Tuliskan kata-kata doa atau dukungan untuk program ini..." class="w-full border border-slate-200 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+                        <button type="submit" class="bg-primary-500 hover:bg-primary-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md">
+                            Kirim Tanggapan
+                        </button>
+                    </form>
+
+                    <!-- Comments List -->
+                    <div id="comments-container" class="space-y-3 pt-3">
+                        <!-- Dynamic comments inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. DEMO DISCLAIMER POPUP -->
+    <div id="demo-disclaimer" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+        <div class="demo-card bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border border-slate-200">
+            <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-5 flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-primary-500 text-white flex items-center justify-center shrink-0">
+                    <i class="bi bi-exclamation-circle-fill text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg md:text-xl font-extrabold text-slate-900">PENTING: DISCLAIMER VERSI DEMO</h2>
+                    <p class="text-xs text-slate-500">Preview / Prototype Website YSKN</p>
+                </div>
+            </div>
+
+            <div class="px-6 py-6 text-sm md:text-base text-slate-600 leading-relaxed space-y-4">
+                <p>Selamat datang di situs web kami. Harap dicatat bahwa website yang Anda akses saat ini adalah Versi Demo (Preview/Prototype). Dengan menggunakan atau menjelajahi situs ini, Anda memahami dan menyetujui ketentuan berikut:</p>
+                <p><strong class="text-slate-900">Tujuan Konten:</strong> Seluruh konten, gambar, berita, dan teks yang ditampilkan di website ini hanya berfungsi sebagai alat bantu visual (placeholder) dan bertujuan untuk simulasi antarmuka pengguna.</p>
+                <p><strong class="text-slate-900">Akurasi Data:</strong> Informasi di dalam demo ini tidak dapat dijamin keakuratannya, kelengkapannya, maupun kemutakhirannya. Data yang ada tidak mencerminkan rilis berita atau transaksi keuangan riil Yayasan.</p>
+                <p><strong class="text-slate-900">Fitur & Transaksi:</strong> Pengisian formulir atau konfirmasi donasi di dalam versi demo ini adalah simulasi murni murni untuk pengujian UX.</p>
+                <p class="font-semibold text-primary-600">(Developed by WasobiTech)</p>
+            </div>
+
+            <div class="sticky bottom-0 bg-white border-t border-slate-100 px-6 py-4">
+                <button onclick="closeDemoDisclaimer()" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 rounded-xl transition-all shadow-md">
+                    Saya Memahami & Lanjutkan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CONFIRMATION DONATION MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full border border-slate-100 relative shadow-2xl space-y-6">
+            <button onclick="closeConfirmModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-full flex items-center justify-center transition-all focus:outline-none">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Konfirmasi Donasi Kemanusiaan</h3>
+                <p class="text-slate-500 text-xs">Rekening Resmi Mandiri: <strong id="norek-val" class="text-slate-900 font-mono">123-00-1234567-8</strong> 
+                <button onclick="copyNorek()" class="text-primary-600 hover:underline ml-1"><i class="bi bi-copy"></i> Salin</button></p>
+            </div>
+            <form id="confirm-donation-form" onsubmit="event.preventDefault(); openToast('Konfirmasi donasi Anda berhasil terkirim!'); closeConfirmModal();" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">Nama Donatur</label>
+                    <input type="text" required placeholder="Contoh: Hamba Allah / Budi Santoso" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">Jumlah Transfer (Rp)</label>
+                    <input type="number" required placeholder="Contoh: 100000" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">Upload Bukti Transfer</label>
+                    <input type="file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                </div>
+                <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md">Kirim Laporan Konfirmasi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. PDF DOCUMENT VIEWER MODAL -->
+    <div id="pdfModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full md:w-4/5 h-[90vh] rounded-3xl overflow-hidden relative flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b bg-white sticky top-0 z-10">
+                <div>
+                    <h3 id="pdfTitle" class="font-bold text-lg text-slate-900">Dokumen</h3>
+                    <p id="pdfInfo" class="text-xs text-slate-500"></p>
+                </div>
+                <button onclick="closePDF()" class="text-slate-400 hover:text-rose-600 text-2xl focus:outline-none">
+                    <i class="bi bi-x-circle-fill"></i>
+                </button>
+            </div>
+            <div class="flex-grow bg-slate-100 flex items-center justify-center p-8 text-center">
+                <div class="space-y-4 max-w-md">
+                    <i class="bi bi-file-earmark-pdf-fill text-6xl text-rose-500"></i>
+                    <h4 class="font-bold text-slate-800 text-lg">Pratinjau Dokumen Legal YSKN</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Dokumen verifikasi resmi pendirian, NPWP, serta struktur kepengurusan Yayasan Sahabat Kemanusiaan Nusantara.
+                    </p>
+                    <a id="downloadPDF" href="#" onclick="openToast('Mengunduh salinan berkas PDF...'); return false;" class="bg-primary-500 hover:bg-primary-600 text-white px-5 py-3 rounded-xl inline-flex items-center gap-2 text-xs font-bold transition-all shadow-md">
+                        <i class="bi bi-download"></i> Download Berkas PDF Resmi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[120] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // News Database Mock
+        const newsDatabase = {
+            1: {
+                title: "Respon Cepat Tim Kemanusiaan YSKN Salurkan Logistik Darurat Korban Bencana",
+                category: "Tanggap Bencana",
+                date: "05 Oktober 2026",
+                readtime: "3 min baca",
+                views: "1.840",
+                image: "https://i.pinimg.com/736x/70/71/93/7071937848b43f34335735f04c7bcaf1.jpg",
+                quote: "Meringankan kesulitan saudara kita yang tertimpa musibah adalah kewajiban moral bersama.",
+                content: [
+                    "Bencana alam yang melanda beberapa titik pemukiman warga memicu keprihatinan mendalam. Menanggapi situasi tersebut, Yayasan Sahabat Kemanusiaan Nusantara (YSKN) bergerak cepat mengirimkan tim tanggap darurat lokasi bencana.",
+                    "Penyaluran tahap pertama difokuskan pada pemenuhan kebutuhan dasar penyintas, meliputi 500 paket makanan siap saji, 200 selimut tebal, air bersih, serta perlengkapan sanitasi dan obat-obatan medis pertama.",
+                    "Koordinator Relawan YSKN menyatakan bahwa armada ambulan dan posko dapur umum akan tetap disiagakan di area bencana hingga kondisi masyarakat berangsur pulih dan rehabilitasi hunian darurat dapat dilaksanakan."
+                ]
+            },
+            2: {
+                title: "Layanan Ambulan Gratis YSKN Genapkan 1.000 Pengantaran Pasien Kritis",
+                category: "Ambulan & Kesehatan",
+                date: "02 Oktober 2026",
+                readtime: "2 min baca",
+                views: "1.220",
+                image: "https://i.pinimg.com/736x/59/a0/67/59a0673eeb1f1ad7d9658a4780e664e5.jpg",
+                quote: "Setiap detik sangat berharga dalam menyelamatkan nyawa hamba Allah yang sedang kritis.",
+                content: [
+                    "Sejak awal pengoperasiannya, layanan ambulan gratis Yayasan Sahabat Kemanusiaan Nusantara telah berhasil mencatatkan pencapaian 1.000 pengantaran pasien gawat darurat dan jenazah tanpa biaya sama sekali.",
+                    "Fasilitas ambulan dilengkapi dengan tabung oksigen standar, tandu medis stutcher, serta pendampingan tim driver yang berpengalaman dalam merespon situasi darurat 24 jam nonstop.",
+                    "Masyarakat yang membutuhkan pertolongan dapat menghubungi nomor hotline resmi YSKN kapan saja tanpa dikenakan biaya administrasi atau BBM."
+                ]
+            },
+            3: {
+                title: "Penyaluran 500 Paket Pangan Bernutrisi Untuk Lansia & Yatim Dhuafa",
+                category: "Pangan & Gizi",
+                date: "28 September 2026",
+                readtime: "3 min baca",
+                views: "950",
+                image: "https://i.pinimg.com/736x/c9/71/4d/c9714d5c7628abe785e013afdf07f0e4.jpg",
+                quote: "Senyum bahagia penerima manfaat saat menerima bantuan pangan adalah energi kebaikan kita.",
+                content: [
+                    "Program Berbagi Pangan YSKN kembali menyasar kawasan pemukiman padat. Ratusan paket beras, minyak goreng, susu, dan bahan pokok berkualitas disalurkan secara door-to-door.",
+                    "Penyaluran ini diprioritaskan bagi para lansia sebatang kara serta janda kurang mampu yang tidak lagi memiliki penghasilan tetap.",
+                    "Proses distribusi didampingi langsung oleh tokoh masyarakat setempat guna memastikan bantuan tepat sasaran kepada warga yang paling membutuhkan."
+                ]
+            },
+            4: {
+                title: "Senyum Cerah Anak Yatim Penerima Beasiswa Orang Tua Asuh YSKN",
+                category: "Pendidikan",
+                date: "20 September 2026",
+                readtime: "4 min baca",
+                views: "1.410",
+                image: "https://i.pinimg.com/736x/7c/32/e9/7c32e9c3781aa159af833b60136b79f7.jpg",
+                quote: "Pendidikan adalah jembatan emas bagi anak yatim untuk meraih masa depan yang gemilang.",
+                content: [
+                    "Sebanyak puluhan anak yatim dan piatu berprestasi menerima dana bantuan pendidikan serta perlengkapan sekolah berupa tas, buku, dan seragam baru dari YSKN.",
+                    "Program beasiswa ini bertujuan untuk menekan angka putus sekolah di tingkat SD hingga SMA, memberikan kepastian bagi generasi muda untuk meraih cita-citanya.",
+                    "Para penerima manfaat juga mendapatkan pembinaan karakter berkala dan mentoring motivasi belajar dari relawan akademisi YSKN."
+                ]
+            },
+            5: {
+                title: "Aksi Posko Keliling Medis & Pemeriksaan Kesehatan Gratis Nelayan",
+                category: "Ambulan & Kesehatan",
+                date: "14 September 2026",
+                readtime: "3 min baca",
+                views: "880",
+                image: "https://i.pinimg.com/736x/08/69/40/08694028e7c1412f0e3f5680dc9b2156.jpg",
+                quote: "Masyarakat sehat adalah awal dari bangsa yang kuat dan berdaya.",
+                content: [
+                    "YSKN mendirikan posko klinik keliling di daerah pesisir guna memberikan pemeriksaan tensi, gula darah, serta konsultasi dokter secara cuma-cuma.",
+                    "Lebih dari 200 warga pesisir mendatangi lokasi layanan untuk memeriksakan kondisi kesehatan serta menerima obat-obatan dan vitamin tambahan.",
+                    "Aksi sosial medis ini rutin diselenggarakan setiap bulan secara berpindah-pindah ke daerah pelosok yang minim sarana faskes."
+                ]
+            },
+            6: {
+                title: "Program Modal Usaha Mandiri Dorong Kemandirian Ekonomi Dhuafa",
+                category: "Pemberdayaan",
+                date: "08 September 2026",
+                readtime: "5 min baca",
+                views: "1.050",
+                image: "https://i.pinimg.com/1200x/8d/f1/a7/8df1a73790a5e1003590a1155337eb89.jpg",
+                quote: "Memberikan kail lebih utama daripada sekadar memberikan ikan.",
+                content: [
+                    "Melalui program Pemberdayaan Ekonomi Nusantara, YSKN menyalurkan bantuan modal usaha tanpa bunga serta perlengkapan dagang gerobak bagi pelaku usaha mikro pra-sejahtera.",
+                    "Bantuan ini dilengkapi dengan pelatihan manajemen keuangan sederhana agar para penerima manfaat mampu mengelola usahanya secara mandiri dan berkelanjutan.",
+                    "Diharapkan program ini mampu mengangkat taraf hidup keluarga dhuafa menjadi keluarga yang berdaya secara finansial."
+                ]
+            },
+            7: {
+                title: "Pendirian Posko Dapur Umum Sediakan 1.000 Porsi Makanan Hangat",
+                category: "Tanggap Bencana",
+                date: "01 September 2026",
+                readtime: "3 min baca",
+                views: "760",
+                image: "https://i.pinimg.com/1200x/5c/31/c5/5c31c5b4a58cfcf2bc06c5118a3ab2c9.jpg",
+                quote: "Santapan hangat di saat krisis memberi kekuatan jiwa bagi para penyintas.",
+                content: [
+                    "Aksi kolaborasi relawan dapur umum YSKN berhasil menyajikan lebih dari seribu porsi konsumsi bergizi seimbang untuk korban genangan banjir.",
+                    "Menu yang diracik selalu mengutamakan kebersihan dan standar kecukupan nutrisi bagi anak-anak serta usia lanjut.",
+                    "YSKN mengucapkan terima kasih yang tak terhingga kepada para donatur yang terus mempercayakan infaknya melalui yayasan kami."
+                ]
+            }
+        };
+
+        let currentActiveCategory = 'semua';
+
+        // Initialize Auto Demo Disclaimer
+        document.addEventListener("DOMContentLoaded", function() {
+            const disclaimer = document.getElementById('demo-disclaimer');
+            if (disclaimer) {
+                disclaimer.classList.add('active');
+            }
+        });
+
+        function closeDemoDisclaimer() {
+            const disclaimer = document.getElementById('demo-disclaimer');
+            if (disclaimer) {
+                disclaimer.classList.remove('active');
+            }
+        }
+
+        // Mobile Nav Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.className = 'bi bi-list text-3xl';
+            } else {
+                menuIcon.className = 'bi bi-x-lg text-2xl';
+            }
+        }
+
+        // Search & Category Filter Logic
+        function filterNews() {
+            const searchVal = document.getElementById('news-search-input').value.toLowerCase().trim();
+            const clearBtn = document.getElementById('clear-search-btn');
+            const items = document.querySelectorAll('.news-item');
+            let visibleCount = 0;
+
+            if (searchVal.length > 0) {
+                clearBtn.classList.remove('hidden');
+                clearBtn.classList.add('flex');
+            } else {
+                clearBtn.classList.add('hidden');
+                clearBtn.classList.remove('flex');
+            }
+
+            items.forEach(item => {
+                const title = item.getAttribute('data-title').toLowerCase();
+                const cat = item.getAttribute('data-category');
+
+                const matchesSearch = title.includes(searchVal);
+                const matchesCat = (currentActiveCategory === 'semua' || cat === currentActiveCategory);
+
+                if (matchesSearch && matchesCat) {
+                    item.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Update Counters & Display empty state
+            const badge = document.getElementById('search-count-badge');
+            const counter = document.getElementById('news-counter');
+            const noResults = document.getElementById('no-results');
+
+            if (badge) badge.innerText = `${visibleCount} Ditemukan`;
+            if (counter) counter.innerText = `${visibleCount} Artikel`;
+
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('news-search-input').value = '';
+            filterNews();
+        }
+
+        function setCategory(catName) {
+            currentActiveCategory = catName;
+            
+            // Toggle active pill styling
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === catName) {
+                    btn.className = 'category-btn active bg-primary-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all shadow-md shrink-0';
+                } else {
+                    btn.className = 'category-btn bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-medium text-xs px-4 py-2 rounded-xl transition-all shrink-0';
+                }
+            });
+
+            filterNews();
+        }
+
+        function resetFilters() {
+            document.getElementById('news-search-input').value = '';
+            setCategory('semua');
+        }
+
+        // Full News Modal Handler
+        let activeNewsTitle = '';
+
+        function openNewsModal(newsId) {
+            const data = newsDatabase[newsId];
+            if (!data) return;
+
+            activeNewsTitle = data.title;
+
+            document.getElementById('modal-category-badge').innerText = data.category;
+            document.getElementById('modal-news-title').innerText = data.title;
+            document.getElementById('modal-news-date').innerHTML = `<i class="bi bi-calendar3 text-primary-500"></i> ${data.date}`;
+            document.getElementById('modal-news-readtime').innerHTML = `<i class="bi bi-clock text-primary-500"></i> ${data.readtime}`;
+            document.getElementById('modal-news-views').innerHTML = `<i class="bi bi-eye-fill text-primary-500"></i> ${data.views}`;
+            document.getElementById('modal-news-image').src = data.image;
+            document.getElementById('modal-news-quote').innerText = `"${data.quote}"`;
+
+            // Body Paragraphs
+            const bodyContainer = document.getElementById('modal-news-body');
+            bodyContainer.innerHTML = '';
+            data.content.forEach(para => {
+                const p = document.createElement('p');
+                p.innerText = para;
+                bodyContainer.appendChild(p);
+            });
+
+            // Initial Mock Comment
+            const commentsContainer = document.getElementById('comments-container');
+            commentsContainer.innerHTML = `
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-1">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-slate-800">Budi Santoso</span>
+                        <span class="text-[10px] text-slate-400">Kemarin</span>
+                    </div>
+                    <p class="text-xs text-slate-600 font-light">Semoga berkah selalu untuk seluruh pengurus YSKN dan donatur.</p>
+                </div>
+            `;
+
+            const modal = document.getElementById('news-detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeNewsModal() {
+            const modal = document.getElementById('news-detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function submitComment(e) {
+            e.preventDefault();
+            const name = document.getElementById('comment-name').value;
+            const text = document.getElementById('comment-text').value;
+
+            const commentsContainer = document.getElementById('comments-container');
+            const newComment = document.createElement('div');
+            newComment.className = 'bg-primary-50/60 p-3.5 rounded-2xl border border-primary-100 space-y-1 animate-fadeIn';
+            newComment.innerHTML = `
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-primary-900">${escapeHtml(name)}</span>
+                    <span class="text-[10px] text-primary-500 font-semibold">Baru saja</span>
+                </div>
+                <p class="text-xs text-slate-700 font-light">${escapeHtml(text)}</p>
+            `;
+            commentsContainer.prepend(newComment);
+
+            document.getElementById('comment-form').reset();
+            openToast('Terima kasih! Tanggapan Anda telah terpublikasi.');
+        }
+
+        function shareViaWA() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(`Baca berita YSKN: ${activeNewsTitle}\n`);
+            window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+        }
+
+        function shareNews(title) {
+            activeNewsTitle = title;
+            shareViaWA();
+        }
+
+        function copyNewsLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                openToast('Tautan artikel berita berhasil disalin ke clipboard!');
+            });
+        }
+
+        function copyNorek() {
+            const norek = document.getElementById('norek-val').innerText;
+            navigator.clipboard.writeText(norek).then(() => {
+                openToast('Nomor Rekening Mandiri YSKN berhasil disalin!');
+            });
+        }
+
+        // Modals Toggle
+        function openConfirmModal() {
+            const m = document.getElementById('confirm-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closeConfirmModal() {
+            const m = document.getElementById('confirm-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function openPDF(title, url, info1, info2) {
+            document.getElementById('pdfTitle').innerText = title;
+            document.getElementById('pdfInfo').innerText = `${info1} • ${info2}`;
+            const m = document.getElementById('pdfModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+        function closePDF() {
+            const m = document.getElementById('pdfModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function changePage(pageNum) {
+            openToast(`Menampilkan halaman berita ke-${pageNum}`);
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        // Toast Notification System
+        function openToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-slate-700 transition-all duration-300 transform translate-y-2 opacity-0';
+            toast.innerHTML = `<i class="bi bi-check-circle-fill text-primary-400 text-base"></i> <span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
